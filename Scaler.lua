@@ -7,11 +7,14 @@
 	Github:
 		https://github.com/Y1195/Scaler
 	
-	Model Link:
+	Model:
 		https://www.roblox.com/library/6522838162/Scaler
 	
-	Demo Place Link:
+	Demo Place:
 		https://www.roblox.com/games/6522817409/UI-Scaler-Demo
+	
+	Video Demo:
+		https://www.youtube.com/watch?v=k9rdnu12G88
 
 
 	Usage:
