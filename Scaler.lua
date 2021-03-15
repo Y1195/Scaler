@@ -1,3 +1,28 @@
+-- Scaler
+-- 0_1195
+-- March 15, 2021
+
+--[[
+
+	Github:
+		https://github.com/Y1195/Scaler
+	
+	Model Link:
+		https://www.roblox.com/library/6522838162/Scaler
+	
+	Demo Place Link:
+		https://www.roblox.com/games/6522817409/UI-Scaler-Demo
+
+
+	Usage:
+		Scaler = require(Scaler)
+	
+	API:
+		number Scaler:GetScale()
+
+]]
+
+
 local Collection = game:GetService("CollectionService")
 
 local camera = workspace.CurrentCamera
