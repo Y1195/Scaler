@@ -17,25 +17,35 @@
 		https://www.youtube.com/watch?v=k9rdnu12G88
 
 
-	Usage:
-		Scaler = require(Scaler)
-	
 	API:
-		number Scaler:GetScale()
+		number Scaler:GetAttribute("Scale")
 
 ]]
 
+local SCALE_TAG = "UIScale"
+local SCALE_ATTRIBUTE = "Scale"
+local RESOLUTION_ATTRIBUTE = "Resolution"
+
+local DEFAULT_SCALE = 1
+local DEFAULT_RESOLUTION = 720
 
 local Collection = game:GetService("CollectionService")
 
 local camera = workspace.CurrentCamera
 
-local currentScale = 1
+local currentScale = script:GetAttribute(SCALE_ATTRIBUTE)
+if currentScale == nil then
+	currentScale = DEFAULT_SCALE
+	script:SetAttribute(SCALE_ATTRIBUTE, currentScale)
+end
 
-local MULTIPLIER = 1/720 -- 1/The Y size of the resolution you build your UI at
+local resolution = script:GetAttribute(RESOLUTION_ATTRIBUTE)
+if resolution == nil then
+	resolution = DEFAULT_RESOLUTION
+	script:SetAttribute(RESOLUTION_ATTRIBUTE, resolution)
+end
 
-local SCALE_TAG = "UIScale"
-
+local multiplier = 1/resolution
 
 local scales = {}
 
@@ -44,6 +54,8 @@ local function applyScale(scale)
 end
 
 local function scaleAdded(scale)
+	assert(scale:IsA("UIScale"), scale:GetFullName() .. " is not a UIScale")
+	
 	applyScale(scale)
 	table.insert(scales, scale)
 end
@@ -58,11 +70,13 @@ end
 local function updateScale()
 	local sizeX, sizeY = camera.ViewportSize.X, camera.ViewportSize.Y
 	if sizeY < sizeX then
-		currentScale = MULTIPLIER * sizeY
+		currentScale = multiplier * sizeY
 	else
-		currentScale = MULTIPLIER * sizeX
+		currentScale = multiplier * sizeX
 	end
 	
+	script:SetAttribute(SCALE_ATTRIBUTE, currentScale)
+
 	for i, scale in ipairs(scales) do
 		applyScale(scale)
 	end
@@ -74,15 +88,11 @@ end
 
 updateScale()
 
+script:GetAttributeChangedSignal(RESOLUTION_ATTRIBUTE):Connect(function()
+	resolution = script:GetAttribute(RESOLUTION_ATTRIBUTE)
+	multiplier = 1/resolution
+	updateScale()
+end)
 camera:GetPropertyChangedSignal("ViewportSize"):Connect(updateScale)
 Collection:GetInstanceAddedSignal(SCALE_TAG):Connect(scaleAdded)
 Collection:GetInstanceRemovedSignal(SCALE_TAG):Connect(scaleRemoved)
-
-
-local Scaler = {}
-
-function Scaler:GetScale()
-	return currentScale
-end
-
-return Scaler
