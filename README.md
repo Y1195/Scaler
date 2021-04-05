@@ -8,11 +8,7 @@ Demo Place:
 Video Demo:
 	https://www.youtube.com/watch?v=k9rdnu12G88
 
-
-# Usage
-
-```Scaler = require(Scaler)```
 	
 # API
 
-```number Scaler:GetScale()```
+```number Scaler:GetAttribute("Scale")```
